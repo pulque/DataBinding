@@ -1,23 +1,31 @@
 package com.lizheblogs.databinding.ui.base;
 
 import android.arch.lifecycle.ViewModel;
-import android.databinding.ObservableField;
 
 import java.util.ArrayList;
 
 public abstract class BaseListViewModel<T> extends ViewModel {
     // TODO: Implement the ViewModel
-    public final ObservableField<ArrayList<T>> data;
+    private BaseAdapter adapter;
+    private ArrayList<T> arrayList;
 
     public BaseListViewModel() {
-        data = new ObservableField<>();
+        arrayList = new ArrayList<>();
     }
 
-    public void initData() {
-        data.set(new ArrayList<T>());
+    public void setAdapter(BaseAdapter adapter) {
+        this.adapter = adapter;
     }
 
-    public void updateData(ArrayList<T> dataNew){
-        data.set(dataNew);
+    public ArrayList<T> getArrayList() {
+        return arrayList;
+    }
+
+    public void updateData(ArrayList<T> dataNew) {
+        arrayList.clear();
+        arrayList.addAll(dataNew);
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 }

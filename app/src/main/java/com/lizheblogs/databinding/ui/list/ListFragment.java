@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -17,9 +18,6 @@ import com.lizheblogs.databinding.R;
 import com.lizheblogs.databinding.data.Product;
 import com.lizheblogs.databinding.databinding.ListFragmentBinding;
 import com.lizheblogs.databinding.ui.base.BaseAdapter;
-import com.lizheblogs.databinding.ui.base.BaseListViewModel;
-
-import java.util.ArrayList;
 
 public class ListFragment extends Fragment {
 
@@ -41,21 +39,14 @@ public class ListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ListViewModel mViewModel = ViewModelProviders.of(this).get(ListViewModel.class);
-        mViewModel.initData();
         binding.setViewModel(mViewModel);
-        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), 3);
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), 1);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         binding.recyclerView.setLayoutManager(linearLayoutManager);
-        BaseAdapter<Product> productAdapter = new BaseAdapter<>(R.layout.list_item, BR.product, mViewModel.data.get());
+        binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        BaseAdapter<Product> productAdapter = new BaseAdapter<>(R.layout.list_item, BR.product, mViewModel.getArrayList());
+        mViewModel.setAdapter(productAdapter);
         binding.recyclerView.setAdapter(productAdapter);
-
-    }
-
-    public void onClickCrash() {
-        int i = 1 / 0;
-    }
-
-    public void onClickMain1() {
     }
 
 }
